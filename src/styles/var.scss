@@ -1,5 +1,8 @@
 :root {
-  --icon-size: 60px;
-  --icon-gap-x: 30px;
-  --icon-gap-y: 30px;
+  --icon-size: 60px;  /* 图标最小尺寸单位 */
+  --icon-gap-x: 30px; /* 图标间隙 x轴 */
+  --icon-gap-y: 30px; /* 图标间隙 y轴 */
+  --icon-radius: 8px; /* 图标圆角 */
+  --container-max-width: 1400px; /* 部件容器最大宽度 */
+  --wallpaper-blur: 10px;  /* 壁纸模糊滤镜 */
 }

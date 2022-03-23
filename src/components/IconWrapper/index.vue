@@ -1,5 +1,5 @@
 <template>
-  <div class="icon">
+  <div class="icon" @click="iconClick">
     <img :src="iconData.iconUrl">
   </div>
 </template>
@@ -16,20 +16,26 @@ const icon = defineProps<{
     iconUrl: string
   }
 }>()
+
+const iconClick = () => {
+  if (icon.iconData.url) {
+    window.open(icon.iconData.url, '_blank')
+  }
+}
 </script>
 
 <style scoped lang="scss">
 .icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  // border-radius: 8px;
+  // overflow: hidden;
   cursor: pointer;
   img {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: cover;
   }
 }
 </style>

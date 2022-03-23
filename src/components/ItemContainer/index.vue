@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 import WidgetWrapper from '@/components/WidgetWrapper/index.vue'
-import IconWrapper from '../IconWrapper/index.vue'
+import IconWrapper from '@/components/IconWrapper/index.vue'
 
 import { defineProps } from 'vue'
 
@@ -40,9 +40,9 @@ const props = defineProps<{
 .item-box {
   width: var(--icon-size);
   height: var(--icon-size);
-  background-color: rgba($color: #000000, $alpha: .3);
-  // width: 100%;
-  // height: 100%;
+  background-color: rgba($color: #fff, $alpha: 1);
+  border-radius: var(--icon-radius);
+  overflow: hidden;
 }
 @for $x from 1 to 12 {
   @for $y from 1 to 8 {
@@ -55,8 +55,8 @@ const props = defineProps<{
   }
 }
 
-@for $x from 1 to 12 {
-  @for $y from 1 to 8 {
+@for $x from 1 to 30 {
+  @for $y from 1 to 20 {
     .item-box_#{$x}_#{$y} {
       grid-column: span #{$x};
       grid-row: span #{$y};
