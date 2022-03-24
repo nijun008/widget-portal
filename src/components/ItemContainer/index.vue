@@ -44,8 +44,8 @@ const props = defineProps<{
   border-radius: var(--icon-radius);
   overflow: hidden;
 }
-@for $x from 1 to 12 {
-  @for $y from 1 to 8 {
+@for $x from 1 to 11 {
+  @for $y from 1 to 7 {
     .item-container_#{$x}_#{$y} {
       grid-column: span #{$x};
       grid-row: span #{$y};
