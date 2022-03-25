@@ -1,21 +1,24 @@
 <template>
   <div class="sidebar-wrapper" :class="sideBarPosition">
-    <div class="sidebar" :class="{ hidden: !sideBarVisible }">
+    <div class="sidebar flex column" :class="{ hidden: !sideBarVisible }">
       <div class="user-box">
         <n-space vertical>
           <n-avatar :size="26" src="https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png"></n-avatar>
           <div class="user-name">登录</div>
         </n-space>
       </div>
-      <ul class="sidebar-list">
+      <ul class="sidebar-list grow">
         <li class="sidebar-item active">主页</li>
         <li class="sidebar-item">站点</li>
         <li class="sidebar-item">常用</li>
         <li class="sidebar-item">添加</li>
-        <li class="sidebar-item" @click="addIconHandle">添加图标</li>
+        <li class="sidebar-item" @click="emitEvent('addIcon')">添加图标</li>
         <li class="sidebar-item" @click="switchPosition">切换位置</li>
         <li class="sidebar-item" @click="switchVisible">切换显隐</li>
       </ul>
+      <div class="sidebar-setting">
+        <div @click="emitEvent('setting')">设置</div>
+      </div>
     </div>
   </div>
 </template>
@@ -33,10 +36,14 @@ const switchVisible = () => {
   sideBarVisible.value = !sideBarVisible.value
 }
 
-const edmit = defineEmits(['addIcon'])
+const emit = defineEmits(['event'])
 
-const addIconHandle = () => {
-  edmit('addIcon')
+const emitEvent = (eventType:string) => {
+  emit('event', eventType)
+}
+
+const settingClick = () => {
+  console.log('setting')
 }
 </script>
 
@@ -73,13 +80,23 @@ const addIconHandle = () => {
       padding: 50px 0;
     }
     .sidebar-list {
-      line-height: 50px;
       li {
+        padding: 10px 0;
         cursor: pointer;
         &:hover {
           background-color: rgba(4, 4, 4, .3);
         }
         &.active {
+          background-color: rgba(4, 4, 4, .4);
+        }
+      }
+    }
+    .sidebar-setting {
+      padding: 10px 0;
+      > div {
+        padding: 10px 0;
+        cursor: pointer;
+        &:hover {
           background-color: rgba(4, 4, 4, .4);
         }
       }

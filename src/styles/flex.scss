@@ -1,6 +1,9 @@
 .flex {
   display: flex;
 }
+.column {
+  flex-direction: column;
+}
 .center {
   justify-content: center;
 }
@@ -19,6 +22,9 @@
 }
 .end {
   justify-content: flex-end;
+}
+.full {
+  width: 100%;
 }
 .grow {
   flex-grow: 1;

@@ -1,7 +1,8 @@
 <template>
   <div class="page-wrapper home-page-wrapper">
     <Wallpaper />
-    <SideBar @addIcon="addIcon" />
+    <Sidebar @event="sidebarEvent" />
+
     <div class="app-main">
       <div class="header">header</div>
       <div class="app-widget">
@@ -49,6 +50,8 @@
       </div>
       <div class="footer">footer</div>
     </div>
+
+    <Drawer :visible="drawerVisbile" @close="drawerClose" />
   </div>
 </template>
 
@@ -58,7 +61,8 @@ import { reactive, ref } from 'vue'
 
 import ItemContainer from '@/components/ItemContainer/index.vue'
 import Wallpaper from './components/Wallpaper.vue'
-import SideBar from './components/SideBar.vue'
+import Sidebar from './components/Sidebar.vue'
+import Drawer from './components/Drawer.vue'
 
 const widgetList = reactive([
   { size: [3, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
@@ -80,8 +84,17 @@ const widgetList = reactive([
 
 const drag = ref(false)
 
-const addIcon = () => {
-  console.log('addIcon')
+const sidebarEvent = (eventType:string) => {
+  switch (eventType) {
+    case 'setting':
+      drawerVisbile.value = true
+      break
+    case 'addIcon':
+      console.log(eventType)
+      break
+    default:
+      break
+  }
 }
 
 const moveStart = (e) => {
@@ -97,6 +110,12 @@ const moveEnd = (e) => {
 const dragOptions = {
   animation: 200,
   disabled: false
+}
+
+// 抽屉
+const drawerVisbile = ref(false)
+const drawerClose = () => {
+  drawerVisbile.value = false
 }
 
 </script>
