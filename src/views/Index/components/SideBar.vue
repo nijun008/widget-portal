@@ -42,9 +42,6 @@ const emitEvent = (eventType:string) => {
   emit('event', eventType)
 }
 
-const settingClick = () => {
-  console.log('setting')
-}
 </script>
 
 <style lang="scss" scoped>

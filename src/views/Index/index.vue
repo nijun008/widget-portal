@@ -52,6 +52,7 @@
     </div>
 
     <Drawer :visible="drawerVisbile" @close="drawerClose" />
+    <IconFormModal :visible="iconFormVisible" @close="formModalClose" />
   </div>
 </template>
 
@@ -63,6 +64,7 @@ import ItemContainer from '@/components/ItemContainer/index.vue'
 import Wallpaper from './components/Wallpaper.vue'
 import Sidebar from './components/Sidebar.vue'
 import Drawer from './components/Drawer.vue'
+import IconFormModal from './components/IconFormModal.vue'
 
 const widgetList = reactive([
   { size: [3, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
@@ -83,6 +85,10 @@ const widgetList = reactive([
 ])
 
 const drag = ref(false)
+const iconFormVisible = ref(false)
+const formModalClose = () => {
+  iconFormVisible.value = false
+}
 
 const sidebarEvent = (eventType:string) => {
   switch (eventType) {
@@ -90,7 +96,7 @@ const sidebarEvent = (eventType:string) => {
       drawerVisbile.value = true
       break
     case 'addIcon':
-      console.log(eventType)
+      iconFormVisible.value = true
       break
     default:
       break
