@@ -13,8 +13,6 @@
         <li class="sidebar-item">常用</li>
         <li class="sidebar-item">添加</li>
         <li class="sidebar-item" @click="emitEvent('addIcon')">添加图标</li>
-        <li class="sidebar-item" @click="switchPosition">切换位置</li>
-        <li class="sidebar-item" @click="switchVisible">切换显隐</li>
       </ul>
       <div class="sidebar-setting">
         <div @click="emitEvent('setting')">设置</div>
@@ -24,17 +22,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineEmits } from 'vue'
+import { defineEmits, computed } from 'vue'
+import { useStore } from 'vuex'
 
-const sideBarPosition = ref('left')
-const switchPosition = () => {
-  sideBarPosition.value = sideBarPosition.value === 'left' ? 'right' : 'left'
-}
+const sideBarPosition = computed(() => store.state.config.sideBarPosition)
+const sideBarVisible = computed(() => store.state.config.sideBarVisible)
 
-const sideBarVisible = ref(true)
-const switchVisible = () => {
-  sideBarVisible.value = !sideBarVisible.value
-}
+const store = useStore()
 
 const emit = defineEmits(['event'])
 

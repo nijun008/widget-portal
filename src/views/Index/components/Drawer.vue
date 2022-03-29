@@ -74,11 +74,11 @@
             label-width="auto"
             size="small"
           >
-            <n-form-item label="隐藏侧边栏" path="hidden">
-              <n-switch v-model:value="sidebarForm.hidden" />
+            <n-form-item label="显示侧边栏">
+              <n-switch @update:value="sidebarVisibleSwitch" :value="sideBarVisible" />
             </n-form-item>
-            <n-form-item label="侧边栏位置" path="position">
-              <n-radio-group v-model:value="sidebarForm.position" name="radiogroup">
+            <n-form-item label="侧边栏位置">
+              <n-radio-group @update:value="sidebarPositionChange" :value="sideBarPosition" name="radiogroup">
                 <n-space>
                   <n-radio value="left">左</n-radio>
                   <n-radio value="right">右</n-radio>
@@ -94,6 +94,7 @@
 
 <script lang="ts" setup>
 import { defineProps, defineEmits, reactive, computed, ref, onBeforeMount } from 'vue'
+import { useStore } from 'vuex'
 
 const props = defineProps<{
   visible: boolean
@@ -103,6 +104,17 @@ const emit = defineEmits(['close'])
 
 const close = () => {
   emit('close')
+}
+
+const store = useStore()
+const sideBarPosition = computed(() => store.state.config.sideBarPosition)
+const sidebarPositionChange = (value: string) => {
+  store.commit('config/setBarPosition', value)
+}
+
+const sideBarVisible = computed(() => store.state.config.sideBarVisible)
+const sidebarVisibleSwitch = (value:boolean) => {
+  store.commit('config/setBarVisible', value)
 }
 
 // 组件配置
