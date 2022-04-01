@@ -16,9 +16,16 @@
 
               <div class="icon-radio-box txt-center">
                 <div class="icon-radio" :class="{ active: urlForm.iconType === 'img' }" @click="iconTypeClick('img')">
-                  <div class="icon-radio-bg" :style="{ backgroundColor: '#9b59b6' }">名称</div>
+                  <div class="icon-radio-bg" :style="{ backgroundColor: '#9b59b6' }"></div>
                 </div>
-                <div>纯色图标</div>
+                <div>网站图标</div>
+              </div>
+
+              <div class="icon-radio-box txt-center">
+                <div class="icon-radio" :class="{ active: urlForm.iconType === 'custom' }" @click="iconTypeClick('custom')">
+                  <div class="icon-radio-bg" :style="{ backgroundColor: '#9b59b6' }"></div>
+                </div>
+                <div>自定义图标</div>
               </div>
             </div>
           </n-form-item>
@@ -53,6 +60,9 @@
 <script lang="ts" setup>
 import { defineProps, defineEmits, reactive, ref } from 'vue'
 import { FormInst } from 'naive-ui'
+import { useStore } from 'vuex'
+
+const store = useStore()
 
 const formRef = ref<FormInst | null>(null)
 
@@ -87,7 +97,7 @@ const iconTypeClick = (iconType:string) => {
 const saveClick = (goOn:boolean | undefined) => {
   (formRef.value as FormInst).validate(err => {
     if (!err) {
-      console.log(err)
+      console.log(urlForm)
       !goOn && close()
     } else {
       console.log(err)

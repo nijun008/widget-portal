@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import user from './modules/user'
 import config from './modules/config'
+import screenList from './modules/screenList'
 
 export default createStore({
   state: {
@@ -11,6 +12,7 @@ export default createStore({
   },
   modules: {
     user: user,
-    config: config
+    config: config,
+    screenList: screenList
   }
 })

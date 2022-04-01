@@ -43,7 +43,6 @@ const screenList = {
     // sortIcon(state:ScreenState, screenIndex:number, oldIndex:number, newIndex:number) {
     //   let target = state.list[screenIndex].iconList[oldIndex]
     //   if (oldIndex !== newIndex) {
-        
     //   }
     // },
     addIcon(state:ScreenState, screenIndex:number, icon:Icon) {
@@ -53,7 +52,7 @@ const screenList = {
       state.list[screenIndex].iconList.splice(iconIndex)
     },
     editIcon(state:ScreenState, screenIndex:number, iconIndex:number, icon:Icon) {
-      state.list[screenIndex].iconList[iconIndex] = {...icon}
+      state.list[screenIndex].iconList[iconIndex] = { ...icon }
     }
   }
 }

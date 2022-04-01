@@ -10,10 +10,10 @@ const config = {
     sideBarPosition: 'right'
   }),
   mutations: {
-    setBarVisible (state: ConfigState, visible: boolean) {
+    setBarVisible (state: ConfigState, visible: boolean):void {
       state.sideBarVisible = visible
     },
-    setBarPosition (state: ConfigState, position: string) {
+    setBarPosition (state: ConfigState, position: string):void {
       state.sideBarPosition = position
     }
   }
