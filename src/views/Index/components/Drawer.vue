@@ -195,6 +195,7 @@ const navClick = (nav: { name: string, id: string }) => {
     }
   }
   .content {
+    background-color: #f9f9f9;
     padding: 10px;
     .val-box {
       width: 60px;

@@ -11,7 +11,18 @@
         <li class="sidebar-item active">主页</li>
         <li class="sidebar-item">站点</li>
         <li class="sidebar-item">常用</li>
-        <li class="sidebar-item">添加</li>
+        <n-popconfirm
+          :show-icon="false"
+          @positive-click="addScreenConfirm"
+          @negative-click="addScrennCancel">
+          <template #trigger>
+            <li class="sidebar-item">添加</li>
+          </template>
+
+          <n-form-item label="名称">
+            <n-input v-model:value="screenName"></n-input>
+          </n-form-item>
+        </n-popconfirm>
         <li class="sidebar-item" @click="emitEvent('addIcon')">添加图标</li>
       </ul>
       <div class="sidebar-setting">
@@ -22,10 +33,12 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmits, computed } from 'vue'
+import { defineEmits, computed, ref } from 'vue'
 import { useConfigStore } from '@/store/modules/config'
+import { useScreenStore } from '@/store/modules/screen'
 
 const configStore = useConfigStore()
+const screenStore = useScreenStore()
 
 const sideBarPosition = computed(() => configStore.sideBarPosition)
 const sideBarVisible = computed(() => configStore.sideBarVisible)
@@ -34,6 +47,25 @@ const emit = defineEmits(['event'])
 
 const emitEvent = (eventType:string) => {
   emit('event', eventType)
+}
+
+const screenName = ref('')
+
+const addScreenConfirm = () => {
+  if (screenName.value && screenName.value.trim()) {
+    const name = screenName.value.trim()
+    screenStore.addScreen({
+      name,
+      icon: '',
+      iconList: []
+    })
+
+    screenName.value = ''
+  }
+  return false
+}
+const addScrennCancel = () => {
+  screenName.value = ''
 }
 
 </script>
