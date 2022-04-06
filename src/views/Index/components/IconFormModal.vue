@@ -60,9 +60,9 @@
 <script lang="ts" setup>
 import { defineProps, defineEmits, reactive, ref } from 'vue'
 import { FormInst } from 'naive-ui'
-import { useStore } from 'vuex'
+import { useConfigStore } from '@/store/modules/config'
 
-const store = useStore()
+const configStore = useConfigStore()
 
 const formRef = ref<FormInst | null>(null)
 

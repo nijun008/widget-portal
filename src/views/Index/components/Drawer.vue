@@ -94,7 +94,7 @@
 
 <script lang="ts" setup>
 import { defineProps, defineEmits, reactive, computed, ref, onBeforeMount } from 'vue'
-import { useStore } from 'vuex'
+import { useConfigStore } from '@/store/modules/config'
 
 const props = defineProps<{
   visible: boolean
@@ -106,15 +106,15 @@ const close = () => {
   emit('close')
 }
 
-const store = useStore()
-const sideBarPosition = computed(() => store.state.config.sideBarPosition)
+const configStore = useConfigStore()
+const sideBarPosition = computed(() => configStore.sideBarPosition)
 const sidebarPositionChange = (value: string) => {
-  store.commit('config/setBarPosition', value)
+  configStore.setBarPosition(value)
 }
 
-const sideBarVisible = computed(() => store.state.config.sideBarVisible)
+const sideBarVisible = computed(() => configStore.sideBarVisible)
 const sidebarVisibleSwitch = (value:boolean) => {
-  store.commit('config/setBarVisible', value)
+  configStore.setBarVisible(value)
 }
 
 // 组件配置

@@ -1,7 +1,7 @@
 module.exports = {
   configureWebpack: config => {
-    config.externals = {
-      vue: 'Vue'
-    }
+    // config.externals = {
+    //   vue: 'Vue'
+    // }
   }
 }

@@ -1,22 +1,40 @@
-interface ConfigState {
-  sideBarVisible: boolean,
-  sideBarPosition: string
-}
+import { defineStore } from 'pinia'
 
-const config = {
-  namespaced: true,
-  state: ():ConfigState => ({
+export const useConfigStore = defineStore({
+  id: 'config',
+  state: () => ({
     sideBarVisible: true,
     sideBarPosition: 'right'
   }),
-  mutations: {
-    setBarVisible (state: ConfigState, visible: boolean):void {
-      state.sideBarVisible = visible
+  actions: {
+    setBarVisible (visible: boolean):void {
+      this.sideBarVisible = visible
     },
-    setBarPosition (state: ConfigState, position: string):void {
-      state.sideBarPosition = position
+    setBarPosition (position: string):void {
+      this.sideBarPosition = position
     }
   }
-}
+})
 
-export default config
+// interface ConfigState {
+//   sideBarVisible: boolean,
+//   sideBarPosition: string
+// }
+
+// const config = {
+//   namespaced: true,
+//   state: ():ConfigState => ({
+//     sideBarVisible: true,
+//     sideBarPosition: 'right'
+//   }),
+//   mutations: {
+//     setBarVisible (state: ConfigState, visible: boolean):void {
+//       state.sideBarVisible = visible
+//     },
+//     setBarPosition (state: ConfigState, position: string):void {
+//       state.sideBarPosition = position
+//     }
+//   }
+// }
+
+// export default config

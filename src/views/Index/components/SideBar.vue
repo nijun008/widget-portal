@@ -23,12 +23,12 @@
 
 <script lang="ts" setup>
 import { defineEmits, computed } from 'vue'
-import { useStore } from 'vuex'
+import { useConfigStore } from '@/store/modules/config'
 
-const sideBarPosition = computed(() => store.state.config.sideBarPosition)
-const sideBarVisible = computed(() => store.state.config.sideBarVisible)
+const configStore = useConfigStore()
 
-const store = useStore()
+const sideBarPosition = computed(() => configStore.sideBarPosition)
+const sideBarVisible = computed(() => configStore.sideBarVisible)
 
 const emit = defineEmits(['event'])
 
