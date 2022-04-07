@@ -1,6 +1,12 @@
 <template>
   <div class="icon" @click="iconClick">
-    <img :src="iconData.iconUrl">
+    <div
+      class="icon-bg flex middle center"
+      v-if="iconData.iconType === 'color'"
+      :style="{ backgroundColor: iconData && iconData.iconColor }">
+      <span>{{ iconData.iconTxt }}</span>
+    </div>
+    <img v-else :src="iconData.iconUrl">
   </div>
 </template>
 
@@ -13,7 +19,10 @@ const icon = defineProps<{
     id: string,
     type: string,
     url: string,
-    iconUrl: string
+    iconType: string,
+    iconUrl?: string,
+    iconColor?: string,
+    iconTxt?: string,
   }
 }>()
 
@@ -31,6 +40,12 @@ const iconClick = () => {
   // border-radius: 8px;
   // overflow: hidden;
   cursor: pointer;
+  .icon-bg {
+    font-size: 16px;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+  }
   img {
     display: block;
     width: 100%;

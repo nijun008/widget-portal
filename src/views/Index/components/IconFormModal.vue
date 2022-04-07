@@ -2,9 +2,12 @@
   <n-modal :show="props.visible" >
     <div class="icon-form">
       <n-card title="添加网址" closable @close="close">
-        <n-form :model="urlForm" :rules="rules" ref="formRef">
+        <n-form :model="urlForm" :rules="rules" ref="formRef" label-placement="left" label-width="auto">
+          <n-form-item label="所在分组">
+            <n-select v-model:value="screenIndex" :options="screenOptions" />
+          </n-form-item>
           <n-form-item label="网站地址" path="url"><n-input v-model:value="urlForm.url" /></n-form-item>
-          <n-form-item label="网站名称" path="name"><n-input v-model:value="urlForm.name" /></n-form-item>
+          <n-form-item label="网站名称" path="title"><n-input v-model:value="urlForm.title" @update:value="nameInput" /></n-form-item>
           <n-form-item label="选择图标">
             <div class="icon-radio-list flex">
               <div class="icon-radio-box txt-center">
@@ -58,35 +61,70 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, defineEmits, reactive, ref } from 'vue'
+import { defineProps, defineEmits, reactive, ref, computed, watch } from 'vue'
 import { FormInst } from 'naive-ui'
 import { useConfigStore } from '@/store/modules/config'
-
-const configStore = useConfigStore()
-
-const formRef = ref<FormInst | null>(null)
-
-const urlForm = reactive({
-  url: '',
-  name: '',
-  icon: '',
-  iconType: 'color',
-  iconTxt: '名称',
-  iconColor: '#18A058'
-})
-
-const rules = {
-  url: [{ required: true, message: '请输入URL', trigger: 'blur' }],
-  name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
-}
+import { useScreenStore } from '@/store/modules/screen'
 
 const props = defineProps<{
   visible: boolean
 }>()
 
+const configStore = useConfigStore()
+const screenStore = useScreenStore()
+
+// 主屏选项
+const screenOptions = computed(() => {
+  return screenStore.list.map((item, index) => ({ label: item.name, value: index }))
+})
+
+const formRef = ref<FormInst | null>(null)
+
+// 表单
+const urlForm = reactive({
+  url: '',
+  title: '',
+  icon: '',
+  iconType: 'color',
+  iconTxt: '名称',
+  iconColor: '#18A058'
+})
+// 表单验证
+const rules = {
+  url: [{ required: true, message: '请输入URL', trigger: 'blur' }],
+  title: [{ required: true, message: '请输入名称', trigger: 'blur' }]
+}
+
+// 网站名称输入
+const nameInput = (value:string) => {
+  if (value && value.trim().length > 0) {
+    urlForm.iconTxt = value
+  } else {
+    urlForm.iconTxt = ''
+  }
+}
+
+// 当前主屏下标
+const currentIndex = computed(() => screenStore.currentIndex)
+const screenIndex = ref(currentIndex.value)
+watch(currentIndex, (value) => {
+  screenIndex.value = value
+})
+
+// 图标表单弹框关闭
 const emits = defineEmits(['close'])
 const close = () => {
   emits('close')
+  resetForm()
+}
+// 清空表单
+const resetForm = () => {
+  urlForm.url = ''
+  urlForm.title = ''
+  urlForm.icon = ''
+  urlForm.iconType = 'color'
+  urlForm.iconTxt = '名称'
+  urlForm.iconColor = '#18A058'
 }
 
 // 图标类型切换
@@ -94,11 +132,19 @@ const iconTypeClick = (iconType:string) => {
   urlForm.iconType = iconType
 }
 
+// 图标保存
 const saveClick = (goOn:boolean | undefined) => {
   (formRef.value as FormInst).validate(err => {
     if (!err) {
       console.log(urlForm)
-      !goOn && close()
+      screenStore.addIcon(screenIndex.value, {
+        ...urlForm,
+        type: 'ext_link',
+        id: Date.now().toString(),
+        size: [1, 1],
+        rowfull: false
+      })
+      close()
     } else {
       console.log(err)
     }
@@ -127,6 +173,7 @@ const saveClick = (goOn:boolean | undefined) => {
     border-color: #1681ff;
   }
   .icon-radio-bg {
+    overflow: hidden;
     width: 64px;
     height: 64px;
     border-radius: 8px;

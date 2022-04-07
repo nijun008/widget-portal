@@ -56,7 +56,7 @@
           </div> -->
         </n-carousel>
       </div>
-      <div class="footer">footer</div>
+      <div class="footer">footer </div>
     </div>
   </div>
 </template>
