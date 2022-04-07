@@ -1,5 +1,11 @@
 import { defineStore } from 'pinia'
 
+const baseIconList = [
+  { size: [3, 2], iconType: '', rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+  { size: [3, 2], iconType: '', rowfull: false, title: '第一个组件', type: 'ext_widget', id: 'FirstWidget', url: 'http://127.0.0.1:8081/FirstWidget.umd.js', libname: 'FirstWidget', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+  { size: [3, 2], iconType: '', rowfull: false, title: '第二个组件', type: 'ext_widget', id: 'FirstWidget2', url: 'http://127.0.0.1:8081/FirstWidget.umd.js', libname: 'FirstWidget', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' }
+]
+const baseScreen = { id: '1', name: '主页', icon: '', iconList: baseIconList }
 interface Icon {
   id: string,
   title: string,
@@ -17,23 +23,33 @@ interface Icon {
 
 interface Screen {
   // sort: number,
+  id: string,
   name: string,
   icon: string,
   iconList: Icon[]
 }
 
 interface ScreenState {
-  list: Screen[]
+  list: Screen[],
+  cruuent: Screen | null,
+  currentIndex: number
 }
 
 export const useScreenStore = defineStore({
   id: 'screen',
   state: ():ScreenState => ({
-    list: []
+    list: [baseScreen],
+    cruuent: baseScreen,
+    currentIndex: 0
   }),
   actions: {
+    switchScreen (index: number) {
+      this.currentIndex = index
+      this.cruuent = this.list[index]
+    },
     addScreen (screen:Screen) {
       this.list.push(screen)
+      console.log(this.list)
     },
     removeScreen (removeIndex: number) {
       this.list.splice(removeIndex, 1)

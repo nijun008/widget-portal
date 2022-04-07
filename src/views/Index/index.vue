@@ -2,15 +2,22 @@
   <div class="page-wrapper home-page-wrapper">
     <Wallpaper />
     <Sidebar @event="sidebarEvent" />
+    <Drawer :visible="drawerVisbile" @close="drawerClose" />
+    <IconFormModal :visible="iconFormVisible" @close="formModalClose" />
 
     <div class="app-main">
       <div class="header">header</div>
       <div class="app-widget">
-        <n-carousel direction="vertical" :mousewheel="true">
-          <div class="widgets-scroll">
+        <n-carousel
+          direction="vertical"
+          :mousewheel="true"
+          :current-index="currentScreenIndex"
+          @update:current-index="screenChange">
+          <div v-for="(screen) in screenList" :key="screen.id" class="widgets-scroll">
             <div class="widgets-container">
               <draggable
-                :list="widgetList"
+                v-if="screen.iconList && screen.iconList.length"
+                :list="screen.iconList"
                 @start="moveStart"
                 @end="moveEnd"
                 item-key="id"
@@ -24,10 +31,11 @@
                   <ItemContainer :item-data="element" :key="element.id" />
                 </template>
               </draggable>
+              <div v-else>添加组件</div>
             </div>
           </div>
 
-          <div class="widgets-scroll">
+          <!-- <div class="widgets-scroll">
             <div class="widgets-container">
               <draggable
                 :list="widgetList"
@@ -45,14 +53,11 @@
                 </template>
               </draggable>
             </div>
-          </div>
+          </div> -->
         </n-carousel>
       </div>
       <div class="footer">footer</div>
     </div>
-
-    <Drawer :visible="drawerVisbile" @close="drawerClose" />
-    <IconFormModal :visible="iconFormVisible" @close="formModalClose" />
   </div>
 </template>
 
@@ -70,24 +75,30 @@ import IconFormModal from './components/IconFormModal.vue'
 const screenStore = useScreenStore()
 
 const screenList = computed(() => screenStore.list)
+const currentScreenIndex = computed(() => screenStore.currentIndex)
+const screenChange = (cruuentIndex: number) => {
+  if (cruuentIndex >= 0 && cruuentIndex < screenList.value.length) {
+    screenStore.switchScreen(cruuentIndex)
+  }
+}
 
-const widgetList = reactive([
-  { size: [3, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [3, 2], rowfull: false, title: '第一个组件', type: 'ext_widget', id: 'FirstWidget', url: 'http://127.0.0.1:8081/FirstWidget.umd.js', libname: 'FirstWidget', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [3, 2], rowfull: false, title: '第二个组件', type: 'ext_widget', id: 'FirstWidget2', url: 'http://127.0.0.1:8081/FirstWidget.umd.js', libname: 'FirstWidget', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_1vlink122231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link12131', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link51231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [3, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link122131', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link12731', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [4, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1c231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [4, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_alink12gg31', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link612ag31', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1126431', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [4, 3], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_lin3k162431', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [3, 3], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link212431', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
-  { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_l15fink212431', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' }
-])
+// const widgetList = reactive([
+//   { size: [3, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [3, 2], rowfull: false, title: '第一个组件', type: 'ext_widget', id: 'FirstWidget', url: 'http://127.0.0.1:8081/FirstWidget.umd.js', libname: 'FirstWidget', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [3, 2], rowfull: false, title: '第二个组件', type: 'ext_widget', id: 'FirstWidget2', url: 'http://127.0.0.1:8081/FirstWidget.umd.js', libname: 'FirstWidget', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_1vlink122231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link12131', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link51231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [3, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link122131', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link12731', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [4, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1c231', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [4, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_alink12gg31', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link612ag31', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1126431', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [4, 3], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_lin3k162431', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [3, 3], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link212431', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+//   { size: [2, 2], rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_l15fink212431', url: 'https://www.fliggy.com/', iconUrl: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' }
+// ])
 
 const drag = ref(false)
 const iconFormVisible = ref(false)

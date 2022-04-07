@@ -8,9 +8,16 @@
         </n-space>
       </div>
       <ul class="sidebar-list grow">
-        <li class="sidebar-item active">主页</li>
-        <li class="sidebar-item">站点</li>
-        <li class="sidebar-item">常用</li>
+        <li
+          class="sidebar-item"
+          :class="{ active: screen.id === (cruuentScreen && cruuentScreen.id) }"
+          v-for="(screen, index) in screenList"
+          :key="screen.id"
+          @click="screenNavClick(index)">
+          {{ screen.name }}
+        </li>
+        <!-- <li class="sidebar-item">站点</li>
+        <li class="sidebar-item">常用</li> -->
         <n-popconfirm
           :show-icon="false"
           @positive-click="addScreenConfirm"
@@ -39,6 +46,8 @@ import { useScreenStore } from '@/store/modules/screen'
 
 const configStore = useConfigStore()
 const screenStore = useScreenStore()
+const screenList = computed(() => screenStore.list)
+const cruuentScreen = computed(() => screenStore.cruuent)
 
 const sideBarPosition = computed(() => configStore.sideBarPosition)
 const sideBarVisible = computed(() => configStore.sideBarVisible)
@@ -49,12 +58,17 @@ const emitEvent = (eventType:string) => {
   emit('event', eventType)
 }
 
+const screenNavClick = (index: number) => {
+  screenStore.switchScreen(index)
+}
+
 const screenName = ref('')
 
 const addScreenConfirm = () => {
   if (screenName.value && screenName.value.trim()) {
     const name = screenName.value.trim()
     screenStore.addScreen({
+      id: Date.now().toString(),
       name,
       icon: '',
       iconList: []
