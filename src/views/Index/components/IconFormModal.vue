@@ -6,8 +6,8 @@
           <n-form-item label="所在分组">
             <n-select v-model:value="screenIndex" :options="screenOptions" />
           </n-form-item>
-          <n-form-item label="网站地址" path="url"><n-input v-model:value="urlForm.url" /></n-form-item>
-          <n-form-item label="网站名称" path="title"><n-input v-model:value="urlForm.title" @update:value="nameInput" /></n-form-item>
+          <n-form-item label="网站地址" path="url"><n-input v-model:value="urlForm.url" maxlength="50" /></n-form-item>
+          <n-form-item label="网站名称" path="title"><n-input v-model:value="urlForm.title" @update:value="nameInput" maxlength="10" /></n-form-item>
           <n-form-item label="选择图标">
             <div class="icon-radio-list flex">
               <div class="icon-radio-box txt-center">
@@ -38,7 +38,6 @@
               :show-alpha="false"
               v-model:value="urlForm.iconColor"
               :swatches="[
-                '#18A058',
                 '#33c5c5',
                 '#2080F0',
                 '#fbbc04',
@@ -48,10 +47,10 @@
             />
           </n-form-item>
 
-          <n-form-item>
+          <n-form-item label=" ">
             <n-space>
-              <n-button @click="saveClick">添加</n-button>
-              <n-button @click="saveClick(true)">添加并继续</n-button>
+              <n-button type="primary" @click="saveClick">添 加</n-button>
+              <!-- <n-button @click="saveClick(true)">添加并继续</n-button> -->
             </n-space>
           </n-form-item>
         </n-form>
@@ -62,7 +61,7 @@
 
 <script lang="ts" setup>
 import { defineProps, defineEmits, reactive, ref, computed, watch } from 'vue'
-import { FormInst } from 'naive-ui'
+import { FormInst, FormItemRule } from 'naive-ui'
 import { useConfigStore } from '@/store/modules/config'
 import { useScreenStore } from '@/store/modules/screen'
 
@@ -87,11 +86,15 @@ const urlForm = reactive({
   icon: '',
   iconType: 'color',
   iconTxt: '名称',
-  iconColor: '#18A058'
+  iconColor: '#33c5c5',
+  href: ''
 })
 // 表单验证
 const rules = {
-  url: [{ required: true, message: '请输入URL', trigger: 'blur' }],
+  url: [
+    // { required: true, message: '请输入URL', trigger: 'blur' },
+    { required: true, validator: validateUrl, message: '请输入正确的URL', trigger: 'blur' }
+  ],
   title: [{ required: true, message: '请输入名称', trigger: 'blur' }]
 }
 
@@ -124,7 +127,8 @@ const resetForm = () => {
   urlForm.icon = ''
   urlForm.iconType = 'color'
   urlForm.iconTxt = '名称'
-  urlForm.iconColor = '#18A058'
+  urlForm.iconColor = '#33c5c5'
+  urlForm.href = ''
 }
 
 // 图标类型切换
@@ -133,12 +137,12 @@ const iconTypeClick = (iconType:string) => {
 }
 
 // 图标保存
-const saveClick = (goOn:boolean | undefined) => {
+const saveClick = () => {
   (formRef.value as FormInst).validate(err => {
     if (!err) {
-      console.log(urlForm)
       screenStore.addIcon(screenIndex.value, {
         ...urlForm,
+        url: urlForm.href,
         type: 'ext_link',
         id: Date.now().toString(),
         size: [1, 1],
@@ -149,6 +153,28 @@ const saveClick = (goOn:boolean | undefined) => {
       console.log(err)
     }
   })
+}
+
+function validateUrl (rule: FormItemRule, value: string):boolean | Error {
+  if (!value || !value.trim()) {
+    return new Error('请输入URL')
+  }
+  let urlObj
+  try {
+    urlObj = new URL(value)
+  } catch (err) {
+    try {
+      urlObj = new URL(`https://${value}`)
+    } catch (err) {
+      return false
+    }
+  }
+  const { origin, href } = urlObj
+  if (origin !== 'null' && href.length > 7) {
+    urlForm.href = href
+    return true
+  }
+  return false
 }
 </script>
 
