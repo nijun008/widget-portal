@@ -38,7 +38,7 @@ interface ScreenState {
 export const useScreenStore = defineStore({
   id: 'screen',
   state: ():ScreenState => ({
-    list: [baseScreen],
+    list: [baseScreen, { id: '2', name: '工具', icon: '', iconList: [] }],
     cruuent: baseScreen,
     currentIndex: 0
   }),
@@ -48,8 +48,7 @@ export const useScreenStore = defineStore({
       this.cruuent = this.list[index]
     },
     addScreen (screen:Screen) {
-      this.list.push(screen)
-      console.log(this.list)
+      this.list.push({ ...screen })
     },
     removeScreen (removeIndex: number) {
       this.list.splice(removeIndex, 1)
@@ -60,6 +59,7 @@ export const useScreenStore = defineStore({
     },
     addIcon (screenIndex:number, icon:Icon) {
       this.list[screenIndex].iconList.push(icon)
+      console.log(this.list)
     },
     removeIcon (screenIndex:number, iconIndex:number) {
       this.list[screenIndex].iconList.splice(iconIndex)

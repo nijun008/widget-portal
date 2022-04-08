@@ -14,9 +14,8 @@
           :current-index="currentScreenIndex"
           @update:current-index="screenChange">
           <div v-for="(screen) in screenList" :key="screen.id" class="widgets-scroll">
-            <div class="widgets-container">
+            <div class="widgets-container" v-if="screen.iconList && screen.iconList.length > 0">
               <draggable
-                v-if="screen.iconList && screen.iconList.length"
                 :list="screen.iconList"
                 @start="moveStart"
                 @end="moveEnd"
@@ -31,29 +30,9 @@
                   <ItemContainer :item-data="element" :key="element.id" />
                 </template>
               </draggable>
-              <div v-else>添加组件</div>
             </div>
+            <div v-else>添加组件</div>
           </div>
-
-          <!-- <div class="widgets-scroll">
-            <div class="widgets-container">
-              <draggable
-                :list="widgetList"
-                @start="moveStart"
-                @end="moveEnd"
-                item-key="id"
-                tag="transition-group"
-                v-bind="dragOptions"
-                :component-data="{
-                  name:'fade',
-                  type: 'transition-group'
-                }">
-                <template #item="{element}">
-                  <ItemContainer :item-data="element" :key="element.id" />
-                </template>
-              </draggable>
-            </div>
-          </div> -->
         </n-carousel>
       </div>
       <div class="footer">footer </div>
