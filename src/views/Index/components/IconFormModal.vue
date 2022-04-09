@@ -1,7 +1,7 @@
 <template>
-  <n-modal :show="props.visible" >
+  <n-modal :show="props.visible">
     <div class="icon-form">
-      <n-card title="添加网址" closable @close="close">
+      <n-card title="" closable @close="close">
         <n-form :model="urlForm" :rules="rules" ref="formRef" label-placement="left" label-width="auto">
           <n-form-item label="所在分组">
             <n-select v-model:value="screenIndex" :options="screenOptions" />

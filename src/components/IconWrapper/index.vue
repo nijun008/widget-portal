@@ -6,7 +6,7 @@
       :style="{ backgroundColor: iconData && iconData.iconColor }">
       <span class="txt-center ellip">{{ iconData.iconTxt }}</span>
     </div>
-    <img v-else :src="iconData.iconUrl">
+    <img v-else :src="iconData.iconSrc">
   </div>
 </template>
 
@@ -20,7 +20,7 @@ const icon = defineProps<{
     type: string,
     url: string,
     iconType: string,
-    iconUrl?: string,
+    iconSrc?: string,
     iconColor?: string,
     iconTxt?: string,
   }

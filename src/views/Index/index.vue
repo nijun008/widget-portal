@@ -3,7 +3,8 @@
     <Wallpaper />
     <Sidebar @event="sidebarEvent" />
     <Drawer :visible="drawerVisbile" @close="drawerClose" />
-    <IconFormModal :visible="iconFormVisible" @close="formModalClose" />
+    <!-- <IconFormModal :visible="iconFormVisible" @close="formModalClose" /> -->
+    <NewWidgetModal :visible="iconFormVisible"  @close="formModalClose" />
 
     <div class="app-main">
       <div class="header">header</div>
@@ -56,7 +57,8 @@ import ItemContainer from '@/components/ItemContainer/index.vue'
 import Wallpaper from './components/Wallpaper.vue'
 import Sidebar from './components/Sidebar.vue'
 import Drawer from './components/Drawer.vue'
-import IconFormModal from './components/IconFormModal.vue'
+// import IconFormModal from './components/IconFormModal.vue'
+import NewWidgetModal from './components/NewWidgetModal.vue'
 
 const screenStore = useScreenStore()
 

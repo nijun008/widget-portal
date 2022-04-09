@@ -21,7 +21,7 @@ const props = defineProps<{
     id: string,
     type: string,
     url: string,
-    iconUrl: string,
+    iconSrc: string,
     libname?: string,
     size: number[]
   }
