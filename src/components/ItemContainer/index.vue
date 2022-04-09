@@ -4,14 +4,15 @@
       <WidgetWrapper v-if="itemData.type === 'ext_widget'" :widgetData="itemData" />
       <IconWrapper v-if="itemData.type === 'ext_link'" :iconData="itemData" />
     </div>
+    <div v-show="showTitle" class="item-title ellip">{{ itemData.title }}</div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { computed, defineProps } from 'vue'
 import WidgetWrapper from '@/components/WidgetWrapper/index.vue'
 import IconWrapper from '@/components/IconWrapper/index.vue'
-
-import { defineProps } from 'vue'
+import { useConfigStore } from '@/store/modules/config'
 
 const props = defineProps<{
   itemData: {
@@ -25,6 +26,11 @@ const props = defineProps<{
     size: number[]
   }
 }>()
+
+const configStore = useConfigStore()
+
+// 图标标题
+const showTitle = computed(() => configStore.iconTitleVisible)
 </script>
 
 <style lang="scss" scoped>
@@ -36,6 +42,17 @@ const props = defineProps<{
   // padding-top: var(--icon-gap-y);
   box-sizing: border-box;
   padding: calc(var(--icon-gap-y) / 2) calc(var(--icon-gap-x) / 2);
+  position: relative;
+  .item-title {
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    bottom: -8px;
+    font-size: 13px;
+    color: #fff;
+    cursor: default;
+  }
 }
 .item-box {
   width: var(--icon-size);

@@ -18,7 +18,7 @@
             size="small"
           >
             <n-form-item label="显示组件名称" path="showTitle">
-              <n-switch v-model:value="widgetForm.showTitle" />
+              <n-switch :value="widgetForm.showTitle" @update:value="showTitleChange" />
             </n-form-item>
 
             <n-form-item label="圆角大小" path="radius">
@@ -119,18 +119,22 @@ const sidebarVisibleSwitch = (value:boolean) => {
 
 // 组件配置
 const maxRadius = computed(() => {
-  return widgetForm.baseSize / 2
+  return widgetForm.value.baseSize / 2
 })
 
-const widgetForm = reactive({
-  showTitle: false,
+const widgetForm = computed(() => ({
+  showTitle: configStore.iconTitleVisible,
   baseSize: 60,
   radius: 10,
   xGap: 30,
   yGap: 30,
   containerUnit: 'px',
   containerMaxWidth: 1300
-})
+}))
+
+const showTitleChange = (value:boolean) => {
+  configStore.setIconTitleVisible(value)
+}
 
 // 侧边栏配置
 const sidebarForm = reactive({

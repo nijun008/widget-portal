@@ -4,7 +4,7 @@
       class="icon-bg flex middle center"
       v-if="iconData.iconType === 'color'"
       :style="{ backgroundColor: iconData && iconData.iconColor }">
-      <span>{{ iconData.iconTxt }}</span>
+      <span class="txt-center ellip">{{ iconData.iconTxt }}</span>
     </div>
     <img v-else :src="iconData.iconUrl">
   </div>

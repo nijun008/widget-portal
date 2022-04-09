@@ -4,7 +4,8 @@ export const useConfigStore = defineStore({
   id: 'config',
   state: () => ({
     sideBarVisible: true,
-    sideBarPosition: 'right'
+    sideBarPosition: 'right',
+    iconTitleVisible: false
   }),
   actions: {
     setBarVisible (visible: boolean):void {
@@ -12,6 +13,9 @@ export const useConfigStore = defineStore({
     },
     setBarPosition (position: string):void {
       this.sideBarPosition = position
+    },
+    setIconTitleVisible (visible: boolean) {
+      this.iconTitleVisible = visible
     }
   }
 })

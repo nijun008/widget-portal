@@ -6,3 +6,8 @@
 .txt-center {
   text-align: center;
 }
+.ellip {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

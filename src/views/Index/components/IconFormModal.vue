@@ -191,7 +191,7 @@ function validateUrl (rule: FormItemRule, value: string):boolean | Error {
   padding: 4px;
   cursor: pointer;
   color: #fff;
-  font-size: 26px;
+  font-size: 18px;
   box-sizing: border-box;
   border: 2px solid transparent;
   border-radius: 8px;
