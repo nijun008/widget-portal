@@ -3,12 +3,11 @@
     <Wallpaper />
     <Sidebar @event="sidebarEvent" />
     <Drawer :visible="drawerVisbile" @close="drawerClose" />
-    <!-- <IconFormModal :visible="iconFormVisible" @close="formModalClose" /> -->
     <NewWidgetModal :visible="iconFormVisible"  @close="formModalClose" />
 
     <div class="app-main">
       <div class="header">header</div>
-      <div class="app-widget">
+      <div class="app-widget" @contextmenu="contentMenuTrigger">
         <!-- 主屏轮播 -->
         <n-carousel
           direction="vertical"
@@ -45,6 +44,19 @@
       </div>
       <div class="footer">footer </div>
     </div>
+
+    <n-dropdown
+      placement="bottom-start"
+      trigger="manual"
+      size="small"
+      :animated="false"
+      :x="contentMenuX"
+      :y="contentMenuY"
+      :options="contentMenuOptions"
+      :show="contentMenuVisible"
+      :on-clickoutside="contentMenuClickoutside"
+      @select="contentMenuSelected"
+    />
   </div>
 </template>
 
@@ -57,8 +69,32 @@ import ItemContainer from '@/components/ItemContainer/index.vue'
 import Wallpaper from './components/Wallpaper.vue'
 import Sidebar from './components/Sidebar.vue'
 import Drawer from './components/Drawer.vue'
-// import IconFormModal from './components/IconFormModal.vue'
 import NewWidgetModal from './components/NewWidgetModal.vue'
+import useContentMenu from './useContentMenu'
+
+const contentMenuSelected = (target: string | number) => {
+  contentMenuClose()
+  switch (target) {
+    case 'setting':
+      drawerVisbile.value = true
+      break
+    case 'addIcon':
+      iconFormVisible.value = true
+      break
+    default:
+      break
+  }
+}
+
+const {
+  contentMenuX,
+  contentMenuY,
+  contentMenuVisible,
+  contentMenuOptions,
+  contentMenuTrigger,
+  contentMenuClickoutside,
+  contentMenuClose
+} = useContentMenu()
 
 const screenStore = useScreenStore()
 

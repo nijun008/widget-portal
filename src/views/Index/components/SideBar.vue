@@ -30,7 +30,7 @@
             <n-input v-model:value="screenName"></n-input>
           </n-form-item>
         </n-popconfirm>
-        <li class="sidebar-item" @click="emitEvent('addIcon')">添加图标</li>
+        <!-- <li class="sidebar-item" @click="emitEvent('addIcon')">添加图标</li> -->
       </ul>
       <div class="sidebar-setting">
         <div @click="emitEvent('setting')">设置</div>
