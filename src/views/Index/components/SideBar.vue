@@ -49,8 +49,8 @@ const screenStore = useScreenStore()
 const screenList = computed(() => screenStore.list)
 const cruuentScreen = computed(() => screenStore.cruuent)
 
-const sideBarPosition = computed(() => configStore.sideBarPosition)
-const sideBarVisible = computed(() => configStore.sideBarVisible)
+const sideBarPosition = computed(() => configStore.sidebar.position)
+const sideBarVisible = computed(() => configStore.sidebar.visible)
 
 const emit = defineEmits(['event'])
 

@@ -18,37 +18,37 @@
             size="small"
           >
             <n-form-item label="显示组件名称" path="showTitle">
-              <n-switch :value="widgetForm.showTitle" @update:value="showTitleChange" />
+              <n-switch :value="widgetForm.showTitle" @update:value="(val) => iconConfigChange('titleVisible', val)" />
             </n-form-item>
 
-            <n-form-item label="圆角大小" path="radius">
+            <n-form-item label="单位尺寸" path="radius">
               <div class="flex full">
-                <div class="grow"><n-slider v-model:value="widgetForm.radius" :min="0" :max="maxRadius" :step="1" /></div>
-                <div class="pl-12 val-box">{{widgetForm.radius}}px</div>
+                <div class="grow"><n-slider :value="widgetForm.baseSize" :min="30" :max="120" :step="1" @update:value="(val) => iconConfigChange('baseSize', val)" /></div>
+                <div class="pl-12 val-box">{{widgetForm.baseSize}}px</div>
               </div>
             </n-form-item>
 
             <n-form-item label="圆角大小" path="radius">
               <div class="flex full">
-                <div class="grow"><n-slider v-model:value="widgetForm.radius" :min="0" :max="maxRadius" :step="1" /></div>
+                <div class="grow"><n-slider :value="widgetForm.radius" :min="0" :max="maxRadius" :step="1" @update:value="(val) => iconConfigChange('radius', val)" /></div>
                 <div class="pl-12 val-box">{{widgetForm.radius}}px</div>
               </div>
             </n-form-item>
 
             <n-form-item label="左右间距" path="xGap">
               <div class="flex full">
-                <div class="grow"><n-slider v-model:value="widgetForm.xGap" :min="10" :max="50" :step="1" /></div>
+                <div class="grow"><n-slider :value="widgetForm.xGap" :min="10" :max="50" :step="1" @update:value="(val) => iconConfigChange('xGap', val)" /></div>
                 <div class="pl-12 val-box">{{widgetForm.xGap}}px</div>
               </div>
             </n-form-item>
 
             <n-form-item label="上下间距" path="yGap">
               <div class="flex full">
-                <div class="grow"><n-slider v-model:value="widgetForm.yGap" :min="10" :max="50" :step="1" /></div>
+                <div class="grow"><n-slider :value="widgetForm.yGap" :min="10" :max="50" :step="1" @update:value="(val) => iconConfigChange('yGap', val)"  /></div>
                 <div class="pl-12 val-box">{{widgetForm.yGap}}px</div>
               </div>
             </n-form-item>
-            <n-form-item label="容器宽度单位">
+            <!-- <n-form-item label="容器宽度单位">
               <n-radio-group v-model:value="widgetForm.containerUnit" name="radiogroup">
                 <n-space>
                   <n-radio value="%">百分比</n-radio>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="pl-12 val-box">{{widgetForm.containerMaxWidth}}{{ widgetForm.containerUnit }}</div>
               </div>
-            </n-form-item>
+            </n-form-item> -->
           </n-form>
 
           <n-form
@@ -107,12 +107,12 @@ const close = () => {
 }
 
 const configStore = useConfigStore()
-const sideBarPosition = computed(() => configStore.sideBarPosition)
+const sideBarPosition = computed(() => configStore.sidebar.position)
 const sidebarPositionChange = (value: string) => {
   configStore.setBarPosition(value)
 }
 
-const sideBarVisible = computed(() => configStore.sideBarVisible)
+const sideBarVisible = computed(() => configStore.sidebar.visible)
 const sidebarVisibleSwitch = (value:boolean) => {
   configStore.setBarVisible(value)
 }
@@ -123,17 +123,17 @@ const maxRadius = computed(() => {
 })
 
 const widgetForm = computed(() => ({
-  showTitle: configStore.iconTitleVisible,
-  baseSize: 60,
-  radius: 10,
-  xGap: 30,
-  yGap: 30,
+  showTitle: configStore.icon.titleVisible,
+  baseSize: configStore.icon.baseSize,
+  radius: configStore.icon.radius,
+  xGap: configStore.icon.xGap,
+  yGap: configStore.icon.yGap,
   containerUnit: 'px',
   containerMaxWidth: 1300
 }))
 
-const showTitleChange = (value:boolean) => {
-  configStore.setIconTitleVisible(value)
+const iconConfigChange = (key: string, value: boolean | string | number) => {
+  configStore.setIconConfig(key, value)
 }
 
 // 侧边栏配置

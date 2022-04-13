@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps } from 'vue'
+import { computed, defineProps, watch } from 'vue'
 import WidgetWrapper from '@/components/WidgetWrapper/index.vue'
 import IconWrapper from '@/components/IconWrapper/index.vue'
 import { useConfigStore } from '@/store/modules/config'
@@ -30,7 +30,32 @@ const props = defineProps<{
 const configStore = useConfigStore()
 
 // 图标标题
-const showTitle = computed(() => configStore.iconTitleVisible)
+const showTitle = computed(() => configStore.icon.titleVisible)
+// 图标单位尺寸
+const baseSize = computed(() => configStore.icon.baseSize)
+watch(baseSize, (val) => {
+  if (val && val >= 30) {
+    document.documentElement.style.setProperty('--icon-size', val + 'px')
+  }
+})
+
+// 图标圆角
+const radius = computed(() => configStore.icon.radius)
+watch(radius, (val) => {
+  document.documentElement.style.setProperty('--icon-radius', (val || 0) + 'px')
+})
+
+// 图标间隙x
+const xGap = computed(() => configStore.icon.xGap)
+watch(xGap, (val) => {
+  document.documentElement.style.setProperty('--icon-gap-x', (val || 0) + 'px')
+})
+
+// 图标间隙y
+const yGap = computed(() => configStore.icon.yGap)
+watch(yGap, (val) => {
+  document.documentElement.style.setProperty('--icon-gap-y', (val || 0) + 'px')
+})
 </script>
 
 <style lang="scss" scoped>
