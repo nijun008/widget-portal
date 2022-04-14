@@ -1,5 +1,5 @@
 <template>
-  <div class="item-container" :class="`item-container_${itemData.size[0]}_${itemData.size[1]}`">
+  <div class="item-container" :class="`item-container_${itemData.size[0]}_${itemData.size[1]} ${itemData.rowfull ? 'full-widget' : ''}`">
     <div class="item-box" :class="`item-box_${itemData.size[0]}_${itemData.size[1]}`">
       <WidgetWrapper v-if="itemData.type === 'ext_widget'" :widgetData="itemData" />
       <IconWrapper v-if="itemData.type === 'ext_link'" :iconData="itemData" />
@@ -80,14 +80,14 @@ watch(yGap, (val) => {
   }
 }
 .item-box {
-  width: var(--icon-size);
-  height: var(--icon-size);
+  width: 100%;
+  height: 100%;
   background-color: rgba($color: #fff, $alpha: 1);
   border-radius: var(--icon-radius);
   overflow: hidden;
 }
-@for $x from 1 to 11 {
-  @for $y from 1 to 7 {
+@for $x from 1 to 12 {
+  @for $y from 1 to 8 {
     .item-container_#{$x}_#{$y} {
       grid-column: span #{$x};
       grid-row: span #{$y};
@@ -96,15 +96,19 @@ watch(yGap, (val) => {
     }
   }
 }
-
-@for $x from 1 to 30 {
-  @for $y from 1 to 20 {
-    .item-box_#{$x}_#{$y} {
-      grid-column: span #{$x};
-      grid-row: span #{$y};
-      width: calc(var(--icon-size) * $x + var(--icon-gap-x) * ($x - 1));
-      height: calc(var(--icon-size) * $y + var(--icon-gap-y) * ($y - 1));
-    }
-  }
+.item-container.full-widget {
+  grid-column: 1 / -1;
+  width: 100%;
 }
+
+// @for $x from 1 to 30 {
+//   @for $y from 1 to 20 {
+//     .item-box_#{$x}_#{$y} {
+//       grid-column: span #{$x};
+//       grid-row: span #{$y};
+//       width: calc(var(--icon-size) * $x + var(--icon-gap-x) * ($x - 1));
+//       height: calc(var(--icon-size) * $y + var(--icon-gap-y) * ($y - 1));
+//     }
+//   }
+// }
 </style>

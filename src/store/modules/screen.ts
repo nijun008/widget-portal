@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 const baseIconList = [
   { size: [3, 2], iconType: '', rowfull: false, title: '飞猪', type: 'ext_link', id: 'ext_link1231', url: 'https://www.fliggy.com/', iconSrc: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
+  { size: [2, 2], iconType: '', rowfull: true, title: '语雀', type: 'ext_link', id: 'ext_link1231', url: 'https://www.fliggy.com/', iconSrc: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
   { size: [3, 2], iconType: '', rowfull: false, title: '第一个组件', type: 'ext_widget', id: 'FirstWidget', url: 'http://127.0.0.1:8081/FirstWidget.umd.js', libname: 'FirstWidget', iconSrc: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' },
   { size: [3, 2], iconType: '', rowfull: false, title: '第二个组件', type: 'ext_widget', id: 'FirstWidget2', url: 'http://127.0.0.1:8081/FirstWidget.umd.js', libname: 'FirstWidget', iconSrc: 'https://itab.s3.ladydaily.com/files/itab.link/logov2/avatar.png' }
 ]
