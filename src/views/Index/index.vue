@@ -70,7 +70,7 @@ import Wallpaper from './components/Wallpaper.vue'
 import Sidebar from './components/Sidebar.vue'
 import Drawer from './components/Drawer.vue'
 import NewWidgetModal from './components/NewWidgetModal.vue'
-import useContentMenu from './useContentMenu'
+import useContentMenu from '@/useHooks/useContentMenu'
 
 const contentMenuSelected = (target: string | number) => {
   contentMenuClose()

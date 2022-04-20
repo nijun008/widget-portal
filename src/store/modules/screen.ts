@@ -37,7 +37,13 @@ interface ScreenState {
 }
 
 export const useScreenStore = defineStore({
-  id: 'screen',
+  id: 'store/screen',
+  persist: {
+    enabled: true,
+    strategies: [
+      { storage: localStorage }
+    ]
+  },
   state: ():ScreenState => ({
     list: [baseScreen, { id: '2', name: '工具', icon: '', iconList: [] }],
     cruuent: baseScreen,

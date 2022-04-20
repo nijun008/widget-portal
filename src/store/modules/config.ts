@@ -13,7 +13,13 @@ interface configState {
 }
 
 export const useConfigStore = defineStore({
-  id: 'config',
+  id: 'store/config',
+  persist: {
+    enabled: true,
+    strategies: [
+      { storage: localStorage }
+    ]
+  },
   state: ():configState => ({
     sidebar: {
       visible: true,
