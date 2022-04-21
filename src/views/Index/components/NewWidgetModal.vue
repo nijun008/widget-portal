@@ -100,6 +100,7 @@ import { defineProps, defineEmits, reactive, ref, computed, watch } from 'vue'
 import { FormInst, FormItemRule } from 'naive-ui'
 import { useConfigStore } from '@/store/modules/config'
 import { useScreenStore } from '@/store/modules/screen'
+import { WidgetTypes } from '@/consts/index'
 
 const iconData = [
   {
@@ -150,7 +151,7 @@ const addPresetIcon = (item) => {
     title: item.title,
     iconType: 'img',
     iconSrc: item.iconSrc,
-    type: 'ext_link',
+    type: WidgetTypes.Link,
     id: Date.now().toString(),
     size: [1, 1],
     rowfull: false
@@ -254,7 +255,7 @@ const saveClick = () => {
       screenStore.addIcon(screenIndex.value, {
         ...urlForm,
         url: urlForm.href,
-        type: 'ext_link',
+        type: WidgetTypes.Link,
         id: Date.now().toString(),
         size: [1, 1],
         rowfull: false

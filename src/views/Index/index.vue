@@ -2,12 +2,12 @@
   <div class="page-wrapper home-page-wrapper">
     <Wallpaper />
     <Sidebar @event="sidebarEvent" />
-    <Drawer :visible="drawerVisbile" @close="drawerClose" />
-    <NewWidgetModal :visible="iconFormVisible"  @close="formModalClose" />
+    <Drawer :visible="state.drawerVisbile" @close="drawerClose" />
+    <NewWidgetModal :visible="state.iconFormVisible"  @close="formModalClose" />
 
     <div class="app-main">
       <div class="header">header</div>
-      <div class="app-widget" @contextmenu="contentMenuTrigger">
+      <div class="app-widget" @contextmenu="screenContextmenu">
         <!-- 主屏轮播 -->
         <n-carousel
           direction="vertical"
@@ -33,7 +33,7 @@
                     type: 'transition-group'
                   }">
                   <template #item="{element}">
-                    <ItemContainer :item-data="element" :key="element.id" />
+                    <ItemContainer :item-data="element" :key="element.id" :widget-contextmenu="widgetContextmenu" />
                   </template>
                 </draggable>
               </div>
@@ -52,7 +52,7 @@
       :animated="false"
       :x="contentMenuX"
       :y="contentMenuY"
-      :options="contentMenuOptions"
+      :options="state.contentMenuOptions"
       :show="contentMenuVisible"
       :on-clickoutside="contentMenuClickoutside"
       @select="contentMenuSelected"
@@ -64,22 +64,24 @@
 import draggable from 'vuedraggable'
 import { reactive, ref, computed } from 'vue'
 import { useScreenStore } from '@/store/modules/screen'
-
 import ItemContainer from '@/components/ItemContainer/index.vue'
 import Wallpaper from './components/Wallpaper.vue'
 import Sidebar from './components/Sidebar.vue'
 import Drawer from './components/Drawer.vue'
 import NewWidgetModal from './components/NewWidgetModal.vue'
 import useContentMenu from '@/useHooks/useContentMenu'
+import { WidgetTypes } from '@/consts'
 
 const contentMenuSelected = (target: string | number) => {
   contentMenuClose()
   switch (target) {
+    case 'remove':
+      break
     case 'setting':
-      drawerVisbile.value = true
+      state.drawerVisbile = true
       break
     case 'addIcon':
-      iconFormVisible.value = true
+      state.iconFormVisible = true
       break
     default:
       break
@@ -90,17 +92,58 @@ const {
   contentMenuX,
   contentMenuY,
   contentMenuVisible,
-  contentMenuOptions,
   contentMenuTrigger,
   contentMenuClickoutside,
   contentMenuClose
 } = useContentMenu()
+
+const screenContentMenuOptions = [
+  { label: '添加小组件', key: 'addIcon' },
+  { label: '切换壁纸', key: 'changeWallpaper' },
+  { label: '设置', key: 'setting' }
+]
+const widgetContentMenuOptions = [
+  { label: '尺寸', key: 'size' },
+  { label: '移除', key: 'remove' }
+]
+const linkContentMenuOptions = [
+  { label: '编辑', key: 'edit' },
+  { label: '移除', key: 'remove' }
+]
+const state = reactive({
+  iconFormVisible: false,
+  drawerVisbile: false,
+  contentMenuOptions: screenContentMenuOptions
+})
+
+let currentContextmenu = null
+
+const screenContextmenu = (e:MouseEvent) => {
+  state.contentMenuOptions = screenContentMenuOptions
+  contentMenuTrigger(e)
+}
+
+const widgetContextmenu = (widget: any, e: MouseEvent) => {
+  currentContextmenu = widget
+  switch (widget.type) {
+    case WidgetTypes.Widget:
+      state.contentMenuOptions = widgetContentMenuOptions
+      break
+    case WidgetTypes.Link:
+      state.contentMenuOptions = linkContentMenuOptions
+      break
+    default:
+      break
+  }
+  contentMenuTrigger(e)
+}
 
 const screenStore = useScreenStore()
 
 const screenList = computed(() => screenStore.list)
 const currentScreenIndex = computed(() => screenStore.currentIndex)
 const screenChange = (cruuentIndex: number) => {
+  contentMenuClose()
   if (cruuentIndex >= 0 && cruuentIndex < screenList.value.length) {
     screenStore.switchScreen(cruuentIndex)
   }
@@ -109,16 +152,16 @@ const screenChange = (cruuentIndex: number) => {
 const drag = ref(false)
 const iconFormVisible = ref(false)
 const formModalClose = () => {
-  iconFormVisible.value = false
+  state.iconFormVisible = false
 }
 
 const sidebarEvent = (eventType:string) => {
   switch (eventType) {
     case 'setting':
-      drawerVisbile.value = true
+      state.drawerVisbile = true
       break
     case 'addIcon':
-      iconFormVisible.value = true
+      state.iconFormVisible = true
       break
     default:
       break
@@ -141,9 +184,8 @@ const dragOptions = {
 }
 
 // 抽屉
-const drawerVisbile = ref(false)
 const drawerClose = () => {
-  drawerVisbile.value = false
+  state.drawerVisbile = false
 }
 
 </script>

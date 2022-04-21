@@ -1,8 +1,11 @@
 <template>
-  <div class="item-container" :class="`item-container_${itemData.size[0]}_${itemData.size[1]} ${itemData.rowfull ? 'full-widget' : ''}`">
+  <div
+    class="item-container"
+    :class="`item-container_${itemData.size[0]}_${itemData.size[1]} ${itemData.rowfull ? 'full-widget' : ''}`"
+    @contextmenu.stop="iconRightClick">
     <div class="item-box" :class="`item-box_${itemData.size[0]}_${itemData.size[1]}`">
-      <WidgetWrapper v-if="itemData.type === 'ext_widget'" :widgetData="itemData" />
-      <IconWrapper v-if="itemData.type === 'ext_link'" :iconData="itemData" />
+      <WidgetWrapper v-if="itemData.type === WidgetTypes.Widget" :widgetData="itemData" />
+      <IconWrapper v-if="itemData.type === WidgetTypes.Link" :iconData="itemData" />
     </div>
     <div v-show="showTitle" class="item-title ellip">{{ itemData.title }}</div>
   </div>
@@ -13,6 +16,7 @@ import { computed, defineProps, watch } from 'vue'
 import WidgetWrapper from '@/components/WidgetWrapper/index.vue'
 import IconWrapper from '@/components/IconWrapper/index.vue'
 import { useConfigStore } from '@/store/modules/config'
+import { WidgetTypes } from '@/consts/index'
 
 const props = defineProps<{
   itemData: {
@@ -24,8 +28,19 @@ const props = defineProps<{
     iconSrc: string,
     libname?: string,
     size: number[]
-  }
+  },
+  widgetContextmenu: any
 }>()
+
+const iconRightClick = (e:MouseEvent) => {
+  props.widgetContextmenu(props.itemData, e)
+}
+
+const contentMenuOptions = [
+  { label: '尺寸', key: 'size' },
+  { label: '编辑', key: 'edit' },
+  { label: '移除', key: 'remove' }
+]
 
 const configStore = useConfigStore()
 
