@@ -23,7 +23,6 @@ interface Icon {
 }
 
 interface Screen {
-  // sort: number,
   id: string,
   name: string,
   icon: string,
@@ -32,7 +31,6 @@ interface Screen {
 
 interface ScreenState {
   list: Screen[],
-  cruuent: Screen | null,
   currentIndex: number
 }
 
@@ -46,13 +44,12 @@ export const useScreenStore = defineStore({
   },
   state: ():ScreenState => ({
     list: [baseScreen, { id: '2', name: '工具', icon: '', iconList: [] }],
-    cruuent: baseScreen,
+    // cruuent: baseScreen,
     currentIndex: 0
   }),
   actions: {
     switchScreen (index: number) {
       this.currentIndex = index
-      this.cruuent = this.list[index]
     },
     addScreen (screen:Screen) {
       this.list.push({ ...screen })
@@ -69,15 +66,10 @@ export const useScreenStore = defineStore({
       console.log(this.list)
     },
     removeIcon (screenIndex:number, iconIndex:number) {
-      this.list[screenIndex].iconList.splice(iconIndex)
+      this.list[screenIndex].iconList.splice(iconIndex, 1)
     },
     editIcon (screenIndex:number, iconIndex:number, icon:Icon) {
       this.list[screenIndex].iconList[iconIndex] = { ...icon }
     }
-    // moveIcon(screenIndex:number, oldIndex:number, newIndex:number) {
-    //   let target = this.list[screenIndex].iconList[oldIndex]
-    //   if (oldIndex !== newIndex) {
-    //   }
-    // },
   }
 })

@@ -72,10 +72,19 @@ import NewWidgetModal from './components/NewWidgetModal.vue'
 import useContentMenu from '@/useHooks/useContentMenu'
 import { WidgetTypes } from '@/consts'
 
+const screenStore = useScreenStore()
+
+let selectedWidget = null
+let selectedIndex = -1
+
 const contentMenuSelected = (target: string | number) => {
   contentMenuClose()
   switch (target) {
     case 'remove':
+      console.log('remove')
+      if (selectedIndex > -1) {
+        screenStore.removeIcon(screenStore.currentIndex, selectedIndex)
+      }
       break
     case 'setting':
       state.drawerVisbile = true
@@ -116,15 +125,16 @@ const state = reactive({
   contentMenuOptions: screenContentMenuOptions
 })
 
-let currentContextmenu = null
-
 const screenContextmenu = (e:MouseEvent) => {
   state.contentMenuOptions = screenContentMenuOptions
   contentMenuTrigger(e)
 }
 
 const widgetContextmenu = (widget: any, e: MouseEvent) => {
-  currentContextmenu = widget
+  selectedWidget = widget
+  console.log(selectedWidget)
+  selectedIndex = screenStore.list[screenStore.currentIndex].iconList.findIndex(item => item.id === widget.id)
+  console.log(selectedIndex)
   switch (widget.type) {
     case WidgetTypes.Widget:
       state.contentMenuOptions = widgetContentMenuOptions
@@ -137,8 +147,6 @@ const widgetContextmenu = (widget: any, e: MouseEvent) => {
   }
   contentMenuTrigger(e)
 }
-
-const screenStore = useScreenStore()
 
 const screenList = computed(() => screenStore.list)
 const currentScreenIndex = computed(() => screenStore.currentIndex)

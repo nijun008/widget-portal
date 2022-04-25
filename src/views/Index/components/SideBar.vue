@@ -47,7 +47,7 @@ import { useScreenStore } from '@/store/modules/screen'
 const configStore = useConfigStore()
 const screenStore = useScreenStore()
 const screenList = computed(() => screenStore.list)
-const cruuentScreen = computed(() => screenStore.cruuent)
+const cruuentScreen = computed(() => screenStore.list[screenStore.currentIndex])
 
 const sideBarPosition = computed(() => configStore.sidebar.position)
 const sideBarVisible = computed(() => configStore.sidebar.visible)
