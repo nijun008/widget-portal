@@ -39,56 +39,7 @@
             </n-scrollbar>
           </div>
 
-          <n-form v-show="currentMenu === 'custom'" :model="urlForm" :rules="rules" ref="formRef" label-placement="left" label-width="80px">
-            <n-form-item label="网站地址" path="url"><n-input v-model:value="urlForm.url" maxlength="50" /></n-form-item>
-            <n-form-item label="网站名称" path="title"><n-input v-model:value="urlForm.title" @update:value="nameInput" maxlength="10" /></n-form-item>
-            <n-form-item label="选择图标">
-              <div class="icon-radio-list flex">
-                <div class="icon-radio-box txt-center">
-                  <div class="icon-radio" :class="{ active: urlForm.iconType === 'color' }" @click="iconTypeClick('color')">
-                    <div class="icon-radio-bg" :style="{ backgroundColor: urlForm.iconColor }">{{ urlForm.iconTxt }}</div>
-                  </div>
-                  <div>纯色图标</div>
-                </div>
-
-                <div class="icon-radio-box txt-center">
-                  <div class="icon-radio" :class="{ active: urlForm.iconType === 'img' }" @click="iconTypeClick('img')">
-                    <div class="icon-radio-bg" :style="{ backgroundColor: '#9b59b6' }"></div>
-                  </div>
-                  <div>网站图标</div>
-                </div>
-
-                <div class="icon-radio-box txt-center">
-                  <div class="icon-radio" :class="{ active: urlForm.iconType === 'custom' }" @click="iconTypeClick('custom')">
-                    <div class="icon-radio-bg" :style="{ backgroundColor: '#9b59b6' }"></div>
-                  </div>
-                  <div>自定义图标</div>
-                </div>
-              </div>
-            </n-form-item>
-            <n-form-item label="图标颜色">
-              <n-color-picker
-                :modes="['hex']"
-                :show-alpha="false"
-                v-model:value="urlForm.iconColor"
-                :swatches="[
-                  '#33c5c5',
-                  '#2080F0',
-                  '#fbbc04',
-                  '#e74c3c',
-                  '#6c4cb9'
-                ]"
-              />
-            </n-form-item>
-
-            <n-form-item label=" ">
-              <n-space>
-                <n-button type="primary" @click="saveClick">添 加</n-button>
-                <!-- <n-button @click="saveClick(true)">添加并继续</n-button> -->
-              </n-space>
-            </n-form-item>
-          </n-form>
-
+          <CustomUrlForm v-show="currentMenu === 'custom'" :screenIndex="screenIndex" :close="close" />
         </div>
       </div>
     </n-card>
@@ -96,6 +47,7 @@
 </template>
 
 <script lang="ts" setup>
+import CustomUrlForm from './CustomUrlForm.vue'
 import { defineProps, defineEmits, reactive, ref, computed, watch } from 'vue'
 import { FormInst, FormItemRule } from 'naive-ui'
 import { useConfigStore } from '@/store/modules/config'
@@ -336,31 +288,6 @@ function validateUrl (rule: FormItemRule, value: string):boolean | Error {
         }
       }
     }
-  }
-}
-.icon-radio-box {
-  &+.icon-radio-box {
-    margin-left: 10px;
-  }
-}
-.icon-radio {
-  padding: 4px;
-  cursor: pointer;
-  color: #fff;
-  font-size: 18px;
-  box-sizing: border-box;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  &.active {
-    border-color: #1681ff;
-  }
-  .icon-radio-bg {
-    overflow: hidden;
-    width: 64px;
-    height: 64px;
-    border-radius: 8px;
-    line-height: 64px;
-    box-sizing: border-box;
   }
 }
 </style>

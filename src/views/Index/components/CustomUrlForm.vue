@@ -59,7 +59,8 @@ import { WidgetTypes } from '@/consts/index'
 const screenStore = useScreenStore()
 
 const props = defineProps<{
-  screenIndex: number
+  screenIndex: number,
+  close: any
 }>()
 
 const formRef = ref<FormInst | null>(null)
@@ -142,10 +143,38 @@ const saveClick = () => {
         size: [1, 1],
         rowfull: false
       })
-      close()
+      props.close()
     } else {
       console.log(err)
     }
   })
 }
 </script>
+
+<style scoped lang="scss">
+.icon-radio-box {
+  &+.icon-radio-box {
+    margin-left: 10px;
+  }
+}
+.icon-radio {
+  padding: 4px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 18px;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  &.active {
+    border-color: #1681ff;
+  }
+  .icon-radio-bg {
+    overflow: hidden;
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    line-height: 64px;
+    box-sizing: border-box;
+  }
+}
+</style>
